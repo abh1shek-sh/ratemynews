@@ -22,6 +22,8 @@ pipe_through [:browser, :require_authenticated_user]
 
     get "/", PageController, :home
     get "/home", HomeController, :index
+    get "/register", BroadcasterController, :new
+    post "/register", BroadcasterController, :create
   end
 
   # Other scopes may use custom stacks.
