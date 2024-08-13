@@ -1,4 +1,3 @@
-
 defmodule RatemynewsWeb.HomeController do
   use RatemynewsWeb, :controller
 
@@ -6,6 +5,6 @@ defmodule RatemynewsWeb.HomeController do
 
   def index(conn, _params) do
     broadcasters = Broadcasters.list_broadcasters()
-    render(conn, "index.html", broadcasters: broadcasters)
+    render(conn, :index, broadcasters: broadcasters)
   end
 end
