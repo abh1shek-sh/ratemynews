@@ -1,4 +1,3 @@
-
 defmodule Ratemynews.Repo.Migrations.CreateBroadcasters do
   use Ecto.Migration
 
@@ -10,6 +9,8 @@ defmodule Ratemynews.Repo.Migrations.CreateBroadcasters do
       add :topics, :string, null: false
       add :profile_image_url, :string
       add :social_media, :map, null: false, default: %{}
+      add :upvotes, :integer, default: 0
+      add :downvotes, :integer, default: 0
 
       timestamps()
     end
