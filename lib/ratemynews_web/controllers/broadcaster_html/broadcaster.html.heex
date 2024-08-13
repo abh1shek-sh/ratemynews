@@ -1,0 +1,22 @@
+<h1 class="text-2xl font-bold mb-6">Register a New Broadcaster</h1>
+<.form :let={f} for={@changeset} action={~p"/register"} class="space-y-6">
+  <div class="flex flex-col space-y-2">
+    <.input field={f[:name]} label="Name" class="p-2 border rounded-md" />
+  </div>
+  
+  <div class="flex flex-col space-y-2">
+    <.input field={f[:mode_of_broadcast]} label="Mode of Broadcast" class="p-2 border rounded-md" />
+  </div>
+  
+  <div class="flex flex-col space-y-2">
+    <.input field={f[:origin]} label="Origin" class="p-2 border rounded-md" />
+  </div>
+  
+  <div class="flex flex-col space-y-2">
+    <.input field={f[:topics]} label="Topics" class="p-2 border rounded-md" />
+  </div>
+  
+  <div>
+    <.button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Register</.button>
+  </div>
+</.form>

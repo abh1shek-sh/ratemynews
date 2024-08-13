@@ -1,4 +1,3 @@
-
 defmodule Ratemynews.Broadcasters.Broadcaster do
   use Ecto.Schema
   import Ecto.Changeset
@@ -20,6 +19,8 @@ defmodule Ratemynews.Broadcasters.Broadcaster do
   def changeset(broadcaster, attrs) do
     broadcaster
     |> cast(attrs, [:name, :mode_of_broadcast, :origin, :topics, :profile_image_url, :social_media])
-    |> validate_required([:name, :mode_of_broadcast, :origin, :topics, :social_media])
+    |> validate_required([:name, :mode_of_broadcast, :origin, :topics])
+    |> unique_constraint(:name, name: :unique_broadcaster)  # Composite unique constraint
+    |> validate_length(:name, min: 3)
   end
 end
