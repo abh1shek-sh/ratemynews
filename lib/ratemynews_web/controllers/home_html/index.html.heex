@@ -1,0 +1,45 @@
+<div class="container mx-auto py-8">
+  <h1 class="text-4xl font-bold mb-6">Vote for your Favorite News Source</h1>
+  <p class="text-lg mb-4">Who keeps you informed? Tell us your top pick.</p>
+
+  <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="py-3 px-6">Broadcaster</th>
+          <th scope="col" class="py-3 px-6">Mode of Broadcast</th>
+          <th scope="col" class="py-3 px-6">Origin</th>
+          <th scope="col" class="py-3 px-6">Topics</th>
+          <th scope="col" class="py-3 px-6">Up Votes</th>
+          <th scope="col" class="py-3 px-6">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for broadcaster <- @broadcasters do %>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <td class="py-4 px-6 flex items-center">
+              <img src={broadcaster.profile_image_url} alt={broadcaster.name} class="w-10 h-10 rounded-full mr-3">
+              <%= broadcaster.name %>
+            </td>
+            <td class="py-4 px-6">
+              <%= broadcaster.mode_of_broadcast %>
+            </td>
+            <td class="py-4 px-6">
+              <%= broadcaster.origin %>
+            </td>
+            <td class="py-4 px-6">
+              <%= broadcaster.topics %>
+            </td>
+            <td class="py-4 px-6">
+              <%= Enum.count(broadcaster.votes |> Enum.filter(&(&1.vote_type == 1))) %>
+            </td>
+            <td class="py-4 px-6 flex">
+              <button class="bg-green-500 text-white px-2 py-1 rounded mr-2">Upvote</button>
+              <button class="bg-red-500 text-white px-2 py-1 rounded">Downvote</button>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

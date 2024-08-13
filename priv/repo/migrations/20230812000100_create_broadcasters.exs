@@ -1,0 +1,17 @@
+
+defmodule Ratemynews.Repo.Migrations.CreateBroadcasters do
+  use Ecto.Migration
+
+  def change do
+    create table(:broadcasters) do
+      add :name, :string, null: false
+      add :mode_of_broadcast, :string, null: false
+      add :origin, :string, null: false
+      add :topics, :string, null: false
+      add :profile_image_url, :string
+      add :social_media, :map, null: false, default: %{}
+
+      timestamps()
+    end
+  end
+end
