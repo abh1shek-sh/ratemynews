@@ -11,6 +11,7 @@
           <th scope="col" class="py-3 px-6">Origin</th>
           <th scope="col" class="py-3 px-6">Topics</th>
           <th scope="col" class="py-3 px-6">Up Votes</th>
+          <th scope="col" class="py-3 px-6">Down Votes</th>
           <th scope="col" class="py-3 px-6">Actions</th>
         </tr>
       </thead>
@@ -31,11 +32,18 @@
               <%= broadcaster.topics %>
             </td>
             <td class="py-4 px-6">
-              <%= Enum.count(broadcaster.votes |> Enum.filter(&(&1.vote_type == 1))) %>
+              <%= broadcaster.upvotes %>
+            </td>
+            <td class="py-4 px-6">
+              <%= broadcaster.downvotes %>
             </td>
             <td class="py-4 px-6 flex">
-              <button class="bg-green-500 text-white px-2 py-1 rounded mr-2">Upvote</button>
-              <button class="bg-red-500 text-white px-2 py-1 rounded">Downvote</button>
+              <.form :let={f} for={%{}} action={~p"/vote?broadcaster_id=#{broadcaster.id}&vote_type=upvote"} method="post">
+                <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded mr-2">Upvote</button>
+              </.form>
+              <.form :let={f} for={%{}} action={~p"/vote?broadcaster_id=#{broadcaster.id}&vote_type=downvote"} method="post">
+                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">Downvote</button>
+              </.form>
             </td>
           </tr>
         <% end %>
