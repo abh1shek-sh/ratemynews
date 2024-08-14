@@ -43,4 +43,8 @@ defmodule Ratemynews.Broadcasters do
     |> Broadcaster.changeset(attrs)
     |> Repo.insert()
   end
+
+  def get_broadcaster!(id) do
+    Repo.get!(Broadcaster, id)
+  end
 end
