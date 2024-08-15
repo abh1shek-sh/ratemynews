@@ -23,7 +23,7 @@ defmodule RatemynewsWeb.VoteController do
         Voters.decrement_vote_count(broadcaster, opposite_vote_type(vote_type))
     end
 
-    redirect(conn, to: "/home")
+    redirect(conn, to: "/")
   end
 
   defp opposite_vote_type("upvote"), do: "downvote"

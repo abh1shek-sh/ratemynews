@@ -38,12 +38,8 @@
               <%= broadcaster.downvotes %>
             </td>
             <td class="py-4 px-6 flex">
-              <.form :let={f} for={%{}} action={~p"/vote?broadcaster_id=#{broadcaster.id}&vote_type=upvote"} method="post">
-                <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded mr-2">Upvote</button>
-              </.form>
-              <.form :let={f} for={%{}} action={~p"/vote?broadcaster_id=#{broadcaster.id}&vote_type=downvote"} method="post">
-                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">Downvote</button>
-              </.form>
+              <button phx-click="vote" phx-value-broadcaster_id={broadcaster.id} phx-value-vote_type="upvote" class="bg-green-500 text-white px-2 py-1 rounded mr-2">Upvote</button>
+              <button phx-click="vote" phx-value-broadcaster_id={broadcaster.id} phx-value-vote_type="downvote" class="bg-red-500 text-white px-2 py-1 rounded">Downvote</button>
             </td>
           </tr>
         <% end %>
