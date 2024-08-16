@@ -3,9 +3,8 @@ defmodule RatemynewsWeb.BroadcasterLiveComponent do
 
   def render(assigns) do
     ~H"""
-    <tr id={"broadcaster-#{@broadcaster.id}"} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <tr id={"broadcaster-#{@broadcaster.id}"} class="flex flex-col flex-no wrap sm:table-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td class="py-4 px-6 flex items-center">
-        <img src={@broadcaster.profile_image_url} alt={@broadcaster.name} class="w-10 h-10 rounded-full mr-3">
         <%= @broadcaster.name %>
       </td>
       <td class="py-4 px-6">
