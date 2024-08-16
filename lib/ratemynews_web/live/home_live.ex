@@ -12,12 +12,20 @@ defmodule RatemynewsWeb.HomeLive do
     current_user = get_current_user(session)
     broadcasters = Broadcasters.list_broadcasters()
 
+    # Retrieve the user's votes
+    user_votes = Voters.get_user_votes(current_user.id)
+
     if connected?(socket) do
       Phoenix.PubSub.subscribe(Ratemynews.PubSub, "votes")
       Phoenix.PubSub.subscribe(Ratemynews.PubSub, "broadcasters")
     end
 
-    {:ok, assign(socket, broadcasters: broadcasters, current_user: current_user)}
+    {:ok,
+     assign(socket,
+       broadcasters: broadcasters,
+       current_user: current_user,
+       user_vote: user_votes
+     )}
   end
 
   defp get_current_user(session) do
@@ -77,7 +85,14 @@ defmodule RatemynewsWeb.HomeLive do
 
   defp update_broadcasters(socket) do
     broadcasters = Broadcasters.list_broadcasters()
-    assign(socket, broadcasters: broadcasters)
+
+    user_votes =
+      Enum.reduce(broadcasters, %{}, fn broadcaster, acc ->
+        vote = Voters.get_vote(socket.assigns.current_user.id, broadcaster.id)
+        Map.put(acc, broadcaster.id, vote && vote.vote_type)
+      end)
+
+    assign(socket, broadcasters: broadcasters, user_vote: user_votes)
   end
 
   defp opposite_vote_type("upvote"), do: "downvote"
