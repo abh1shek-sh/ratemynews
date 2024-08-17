@@ -18,9 +18,13 @@ defmodule RatemynewsWeb.Router do
   end
 
   scope "/", RatemynewsWeb do
+    pipe_through :browser
+    live "/", HomeLive, :index
+  end
+
+  scope "/", RatemynewsWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/", HomeLive, :index
     get "/register", BroadcasterController, :new
     post "/register", BroadcasterController, :create
     post "/vote", VoteController, :cast_vote

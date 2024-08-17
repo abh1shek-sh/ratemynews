@@ -1,4 +1,5 @@
 defmodule RatemynewsWeb.HomeLive do
+  require Logger
   use RatemynewsWeb, :live_view
   alias Ratemynews.Voters
   alias Ratemynews.Broadcasters
@@ -8,17 +9,16 @@ defmodule RatemynewsWeb.HomeLive do
     {:cont, assign(socket, :current_user, session["current_user"])}
   end
 
-  def mount(_params, session, socket) do
-    current_user = get_current_user(session)
+  def mount(_params, %{"user_token" => user_token}, socket) when not is_nil(user_token) do
+    current_user = get_current_user(user_token)
     broadcasters = Broadcasters.list_broadcasters()
-
-    # Retrieve the user's votes
-    user_votes = Voters.get_user_votes(current_user.id)
 
     if connected?(socket) do
       Phoenix.PubSub.subscribe(Ratemynews.PubSub, "votes")
       Phoenix.PubSub.subscribe(Ratemynews.PubSub, "broadcasters")
     end
+
+    user_votes = Voters.get_user_votes(current_user.id)
 
     {:ok,
      assign(socket,
@@ -28,9 +28,36 @@ defmodule RatemynewsWeb.HomeLive do
      )}
   end
 
-  defp get_current_user(session) do
-    user_token = session["user_token"]
+  def mount(_params, _socket, socket) do
+    broadcasters = Broadcasters.list_broadcasters()
+
+    if connected?(socket) do
+      Phoenix.PubSub.subscribe(Ratemynews.PubSub, "votes")
+      Phoenix.PubSub.subscribe(Ratemynews.PubSub, "broadcasters")
+    end
+
+    {:ok,
+     assign(socket,
+       broadcasters: broadcasters,
+       current_user: nil,
+       user_vote: %{}
+     )}
+  end
+
+  defp get_current_user(user_token) do
     Ratemynews.Accounts.get_user_by_session_token(user_token)
+  end
+
+  def handle_event(
+        "vote",
+        %{"broadcaster_id" => _broadcaster_id, "vote_type" => _vote_type},
+        %{assigns: %{current_user: nil}} = socket
+      ) do
+    Logger.error("User not logged in", [])
+
+    {:noreply,
+     socket
+     |> put_flash(:error, "You must be logged in to vote.")}
   end
 
   def handle_event(
