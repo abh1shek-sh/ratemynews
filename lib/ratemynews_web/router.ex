@@ -27,7 +27,6 @@ defmodule RatemynewsWeb.Router do
 
     get "/register", BroadcasterController, :new
     post "/register", BroadcasterController, :create
-    post "/vote", VoteController, :cast_vote
   end
 
   # Other scopes may use custom stacks.
