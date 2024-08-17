@@ -5,8 +5,7 @@ defmodule RatemynewsWeb.BroadcasterController do
   alias Ratemynews.Broadcasters.Broadcaster
 
   def new(conn, _params) do
-    changeset = Broadcasters.change_broadcaster(%Broadcaster{},%{})
-    IO.inspect(changeset)
+    changeset = Broadcasters.change_broadcaster(%Broadcaster{}, %{})
     render(conn, :broadcaster, changeset: changeset)
   end
 
