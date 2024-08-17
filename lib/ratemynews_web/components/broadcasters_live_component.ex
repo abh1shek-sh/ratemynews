@@ -1,4 +1,4 @@
-defmodule RatemynewsWeb.BroadcasterLiveComponent do
+defmodule RatemynewsWeb.Components.BroadcasterLiveComponent do
   use Phoenix.LiveComponent
   @moduledoc """
   A live component to render a broadcaster row.
