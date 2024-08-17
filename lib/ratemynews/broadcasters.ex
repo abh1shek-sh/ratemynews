@@ -14,8 +14,11 @@ defmodule Ratemynews.Broadcasters do
 
   """
   def list_broadcasters do
-    Repo.all(Broadcaster)
-    |> Repo.preload(:votes)
+    Repo.all(
+      from b in Broadcaster,
+        order_by: [desc: b.upvotes],
+        preload: [:votes]
+    )
   end
 
   @doc """
@@ -42,5 +45,22 @@ defmodule Ratemynews.Broadcasters do
     %Broadcaster{}
     |> Broadcaster.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, broadcaster} ->
+        Phoenix.PubSub.broadcast(
+          Ratemynews.PubSub,
+          "broadcasters",
+          {:broadcaster_created, broadcaster}
+        )
+
+        {:ok, broadcaster}
+
+      {:error, _} = error ->
+        error
+    end
+  end
+
+  def get_broadcaster!(id) do
+    Repo.get!(Broadcaster, id)
   end
 end

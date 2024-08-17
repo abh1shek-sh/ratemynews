@@ -15,7 +15,7 @@ defmodule RatemynewsWeb.BroadcasterController do
       {:ok, _broadcaster} ->
         conn
         |> put_flash(:info, "Broadcaster created successfully.")
-        |> redirect(to: "/home")
+        |> redirect(to: "/")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :broadcaster, changeset: changeset)

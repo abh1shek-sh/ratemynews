@@ -18,12 +18,12 @@ defmodule RatemynewsWeb.Router do
   end
 
   scope "/", RatemynewsWeb do
-pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser, :require_authenticated_user]
 
-    get "/", PageController, :home
-    get "/home", HomeController, :index
+    live "/", HomeLive, :index
     get "/register", BroadcasterController, :new
     post "/register", BroadcasterController, :create
+    post "/vote", VoteController, :cast_vote
   end
 
   # Other scopes may use custom stacks.

@@ -9,6 +9,8 @@ defmodule Ratemynews.Broadcasters.Broadcaster do
     field :topics, :string
     field :profile_image_url, :string
     field :social_media, :map, default: %{}
+    field :upvotes, :integer, default: 0
+    field :downvotes, :integer, default: 0
 
     has_many :votes, Ratemynews.Broadcasters.Vote
 
