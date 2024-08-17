@@ -1,5 +1,8 @@
 defmodule RatemynewsWeb.BroadcasterLiveComponent do
   use Phoenix.LiveComponent
+  @moduledoc """
+  A live component to render a broadcaster row.
+  """
 
 def render(assigns) do
   ~H"""
