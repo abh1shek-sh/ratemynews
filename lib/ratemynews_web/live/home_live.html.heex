@@ -18,7 +18,7 @@
       <tbody>
         <%= for broadcaster <- @broadcasters do %>
           <.live_component 
-            module={RatemynewsWeb.BroadcasterLiveComponent} 
+            module={RatemynewsWeb.Components.BroadcasterLiveComponent} 
             id={broadcaster.id} 
             broadcaster={broadcaster} 
             user_vote={@user_vote[broadcaster.id]}
