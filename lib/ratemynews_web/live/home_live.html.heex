@@ -1,11 +1,17 @@
 <div class="container mx-auto py-8">
   <h1 class="text-4xl font-bold mb-6 text-center">Vote for your Favorite News Source</h1>
   <p class="text-lg mb-4 text-center">Who keeps you informed? Tell us your top pick.</p>
+  
+  <div class="flex justify-center mb-6">
+    <.link navigate={~p"/register"} class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md shadow-md">
+      Register Broadcaster
+    </.link>
+  </div>
 
   <div class="flex items-center sm:justify-center ml-4 sm:ml-0">
     <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr class="flex flex-col flex-no wrap sm:table-row">
+        <tr class="flex flex-col flex-no-wrap sm:table-row">
           <th scope="col" class="py-3 px-6">Broadcaster</th>
           <th scope="col" class="py-3 px-6">Mode of Broadcast</th>
           <th scope="col" class="py-3 px-6">Origin</th>
@@ -27,4 +33,30 @@
       </tbody>
     </table>
   </div>
+
+<div class="flex justify-center mt-4">
+  <button phx-click="change_page" phx-value-page={@page - 1} 
+          class={
+            if @page <= 1 do
+              "text-gray-500 cursor-not-allowed"
+            else
+              "text-blue-500 hover:underline"
+            end
+          } 
+          disabled={@page <= 1}>
+    Previous
+  </button>
+  <span class="mx-4">|</span>
+  <button phx-click="change_page" phx-value-page={@page + 1} 
+          class={
+            if @page * @per_page >= @total_count do
+              "text-gray-500 cursor-not-allowed"
+            else
+              "text-blue-500 hover:underline"
+            end
+          } 
+          disabled={@page * @per_page >= @total_count}>
+    Next
+  </button>
+</div>
 </div>

@@ -5,13 +5,15 @@ defmodule RatemynewsWeb.HomeLive do
   alias Ratemynews.Broadcasters
   alias Ratemynews.Broadcasters.Vote
 
+  @per_page 50
+
   def on_mount(:default, _params, session, socket) do
     {:cont, assign(socket, :current_user, session["current_user"])}
   end
 
   def mount(_params, %{"user_token" => user_token}, socket) when not is_nil(user_token) do
     current_user = get_current_user(user_token)
-    broadcasters = Broadcasters.list_broadcasters()
+    broadcasters = Broadcasters.list_broadcasters(1, @per_page)
 
     if connected?(socket) do
       Phoenix.PubSub.subscribe(Ratemynews.PubSub, "votes")
@@ -24,12 +26,15 @@ defmodule RatemynewsWeb.HomeLive do
      assign(socket,
        broadcasters: broadcasters,
        current_user: current_user,
-       user_vote: user_votes
+       user_vote: user_votes,
+       page: 1,
+       per_page: @per_page,
+       total_count: Broadcasters.count_broadcasters()
      )}
   end
 
   def mount(_params, _socket, socket) do
-    broadcasters = Broadcasters.list_broadcasters()
+    broadcasters = Broadcasters.list_broadcasters(1, @per_page)
 
     if connected?(socket) do
       Phoenix.PubSub.subscribe(Ratemynews.PubSub, "votes")
@@ -40,7 +45,10 @@ defmodule RatemynewsWeb.HomeLive do
      assign(socket,
        broadcasters: broadcasters,
        current_user: nil,
-       user_vote: %{}
+       user_vote: %{},
+       page: 1,
+       per_page: @per_page,
+      total_count: Broadcasters.count_broadcasters()
      )}
   end
 
@@ -98,20 +106,26 @@ defmodule RatemynewsWeb.HomeLive do
     {:noreply, update_broadcasters(socket)}
   end
 
+  def handle_event("change_page", %{"page" => page}, socket) do
+    # Assuming 10 per page
+    broadcasters = Broadcasters.list_broadcasters(String.to_integer(page), socket.assigns.per_page)
+    {:noreply, assign(socket, broadcasters: broadcasters, page: String.to_integer(page))}
+  end
+
   def handle_info({:vote_updated, _broadcaster_id}, socket) do
     ## log the event in the conosle
     IO.puts("vote updated")
-    broadcasters = Broadcasters.list_broadcasters()
+    broadcasters = Broadcasters.list_broadcasters(socket.assigns.page, socket.assigns.per_page)
     {:noreply, assign(socket, broadcasters: broadcasters)}
   end
 
   def handle_info({:broadcaster_created, _broadcaster}, socket) do
-    broadcasters = Broadcasters.list_broadcasters()
+    broadcasters = Broadcasters.list_broadcasters(socket.assigns.page, socket.assigns.per_page)
     {:noreply, assign(socket, broadcasters: broadcasters)}
   end
 
   defp update_broadcasters(socket) do
-    broadcasters = Broadcasters.list_broadcasters()
+    broadcasters = Broadcasters.list_broadcasters(socket.assigns.page,@per_page)
 
     user_votes =
       Enum.reduce(broadcasters, %{}, fn broadcaster, acc ->
@@ -119,7 +133,7 @@ defmodule RatemynewsWeb.HomeLive do
         Map.put(acc, broadcaster.id, vote && vote.vote_type)
       end)
 
-    assign(socket, broadcasters: broadcasters, user_vote: user_votes)
+    assign(socket, broadcasters: broadcasters, user_vote: user_votes, total_count: Broadcasters.count_broadcasters())
   end
 
   defp opposite_vote_type("upvote"), do: "downvote"

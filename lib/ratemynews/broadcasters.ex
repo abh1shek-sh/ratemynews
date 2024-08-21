@@ -13,12 +13,24 @@ defmodule Ratemynews.Broadcasters do
       [%Broadcaster{}, ...]
 
   """
-  def list_broadcasters do
-    Repo.all(
-      from b in Broadcaster,
-        order_by: [desc: b.upvotes],
-        preload: [:votes]
-    )
+  def list_broadcasters(page, per_page \\ 50) do
+    Broadcaster
+    |> order_by([b], desc: b.upvotes)
+    |> limit(^per_page)
+    |> offset(^((page - 1) * per_page))
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns the total count of broadcasters
+
+  ## Examples
+
+      iex> count_broadcasters()
+      10
+  """
+  def count_broadcasters do
+   Repo.aggregate(Broadcaster, :count, :id)
   end
 
   @doc """
