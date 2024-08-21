@@ -33,4 +33,30 @@
       </tbody>
     </table>
   </div>
+
+<div class="flex justify-center mt-4">
+  <button phx-click="change_page" phx-value-page={@page - 1} 
+          class={
+            if @page <= 1 do
+              "text-gray-500 cursor-not-allowed"
+            else
+              "text-blue-500 hover:underline"
+            end
+          } 
+          disabled={@page <= 1}>
+    Previous
+  </button>
+  <span class="mx-4">|</span>
+  <button phx-click="change_page" phx-value-page={@page + 1} 
+          class={
+            if @page * @per_page >= @total_count do
+              "text-gray-500 cursor-not-allowed"
+            else
+              "text-blue-500 hover:underline"
+            end
+          } 
+          disabled={@page * @per_page >= @total_count}>
+    Next
+  </button>
+</div>
 </div>
