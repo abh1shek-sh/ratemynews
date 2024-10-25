@@ -7,7 +7,10 @@ defmodule RatemynewsWeb.UserConfirmationInstructionsLive do
     ~H"""
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
-        No confirmation instructions received?
+      Please check your email for confirmation instructions
+      </.header>
+      <.header class="text-center">
+        <:subtitle> No confirmation instructions received? </:subtitle>
         <:subtitle>We'll send a new confirmation link to your inbox</:subtitle>
       </.header>
 
