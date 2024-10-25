@@ -8,7 +8,7 @@ defmodule Ratemynews.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Ratemynews", "contact@example.com"})
+      |> from({"Rate My News", "no-reply@ratemynews.in"})
       |> subject(subject)
       |> text_body(body)
 
