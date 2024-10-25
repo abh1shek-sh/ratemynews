@@ -111,7 +111,14 @@ if config_env() == :prod do
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
   #
+        config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Ratemynews.Finch
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  config :ratemynews, Ratemynews.Mailer,
+    adapter: Swoosh.Adapters.AmazonSES,
+    region: "ap-south-1",
+    access_key: System.get_env("AWS_ACCESS_KEY_ID"),
+    secret: System.get_env("AWS_ACCESS_KEY_SECRET")
 end
