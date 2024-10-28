@@ -24,8 +24,6 @@ defmodule RatemynewsWeb.UserRegistrationLive do
         phx-submit="save"
         phx-change="validate"
         phx-trigger-action={@trigger_submit}
-        action={~p"/users/log_in?_action=registered"}
-        method="post"
       >
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
@@ -63,7 +61,8 @@ defmodule RatemynewsWeb.UserRegistrationLive do
           )
 
         changeset = Accounts.change_user_registration(user)
-        {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
+        socket |> assign(trigger_submit: true) |> assign_form(changeset)
+        {:noreply, push_navigate(socket, to: "/users/confirm")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
